@@ -1,0 +1,9 @@
+offer_id,tenant_id,max_kw,notice_hours,min_gap_days,max_consecutive,yuan_kwh,state
+O1,T1,50,4,1,2,3.5,unsigned
+O2,T2,50,4,1,2,3.5,unsigned
+O3,T3,50,4,1,2,3.5,unsigned
+O4,T4,50,4,1,2,3.5,unsigned
+O5,T5,50,4,1,2,3.5,unsigned
+O6,T6,50,4,1,2,3.5,unsigned
+O7,T7,50,4,1,2,3.5,unsigned
+O8,T8,50,4,1,2,3.5,unsigned

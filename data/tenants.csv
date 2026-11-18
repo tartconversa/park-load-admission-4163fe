@@ -1,0 +1,9 @@
+tenant_id,process,rated_kw,shift
+T1,P2,140,day
+T2,P3,160,continuous
+T3,P1,180,day
+T4,P2,200,continuous
+T5,P3,220,day
+T6,P1,240,continuous
+T7,P2,260,day
+T8,P3,280,continuous

@@ -1,0 +1,436 @@
+{
+  "title": "园区新增负荷的接入风险与柔性签约分析",
+  "synthetic": true,
+  "tables": [
+    {
+      "name": "tenants",
+      "description": "园区现存企业。",
+      "columns": [
+        {
+          "name": "tenant_id",
+          "type": "string",
+          "description": "企业",
+          "nullable": true
+        },
+        {
+          "name": "process",
+          "type": "string",
+          "description": "工艺",
+          "nullable": true
+        },
+        {
+          "name": "rated_kw",
+          "type": "number",
+          "description": "铭牌功率",
+          "nullable": true
+        },
+        {
+          "name": "shift",
+          "type": "string",
+          "description": "班次",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "tenant_id"
+      ],
+      "references": [],
+      "path": "data/tenants.csv",
+      "row_count": 8,
+      "sha256": "64aae9d6d9d9d09eeae308a32241dec1796accc577935c5d490adfb1210726ac"
+    },
+    {
+      "name": "coverage",
+      "description": "分表覆盖边界；IN为公共进线。",
+      "columns": [
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "分表",
+          "nullable": true
+        },
+        {
+          "name": "tenant_id",
+          "type": "string",
+          "description": "企业",
+          "nullable": true
+        },
+        {
+          "name": "start",
+          "type": "date",
+          "description": "开始",
+          "nullable": true
+        },
+        {
+          "name": "end",
+          "type": "date",
+          "description": "结束",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "meter_id",
+        "start"
+      ],
+      "references": [
+        {
+          "column": "tenant_id",
+          "target_table": "tenants",
+          "target_column": "tenant_id"
+        }
+      ],
+      "path": "data/coverage.csv",
+      "row_count": 8,
+      "sha256": "60d686bbb364d68b52adeb7b32199b3924c172e1a7122f9cdc08d6ea9f06f495"
+    },
+    {
+      "name": "metering",
+      "description": "各日选定窗口的半小时完整时段；未提供全天。",
+      "columns": [
+        {
+          "name": "reading_id",
+          "type": "string",
+          "description": "读数",
+          "nullable": true
+        },
+        {
+          "name": "meter_id",
+          "type": "string",
+          "description": "表",
+          "nullable": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "description": "日",
+          "nullable": true
+        },
+        {
+          "name": "hour",
+          "type": "number",
+          "description": "半小时起点",
+          "nullable": true
+        },
+        {
+          "name": "kwh",
+          "type": "number",
+          "description": "能量",
+          "nullable": true
+        },
+        {
+          "name": "missing_type",
+          "type": "string",
+          "description": "缺测或生产状态",
+          "nullable": true
+        },
+        {
+          "name": "available_at",
+          "type": "datetime",
+          "description": "可知时点",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "reading_id"
+      ],
+      "references": [],
+      "path": "data/metering.csv",
+      "row_count": 8640,
+      "sha256": "34c29f4ecaa22590a1f599dbdbf8d677671d23d18544674b3acf137d7e7b95c9"
+    },
+    {
+      "name": "production",
+      "description": "当日生产记录。",
+      "columns": [
+        {
+          "name": "tenant_id",
+          "type": "string",
+          "description": "企业",
+          "nullable": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "description": "日",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "description": "生产或停产",
+          "nullable": true
+        },
+        {
+          "name": "output_index",
+          "type": "number",
+          "description": "产量指数",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "tenant_id",
+        "date"
+      ],
+      "references": [
+        {
+          "column": "tenant_id",
+          "target_table": "tenants",
+          "target_column": "tenant_id"
+        }
+      ],
+      "path": "data/production.csv",
+      "row_count": 960,
+      "sha256": "3f9e32d02e43b8082ad8c1134670f4ada9ae606cfda9e4e6a164b7b7e72e3099"
+    },
+    {
+      "name": "response_history",
+      "description": "实际通知含未接受，不由观测直接指定效果模型。",
+      "columns": [
+        {
+          "name": "event_id",
+          "type": "string",
+          "description": "事件",
+          "nullable": true
+        },
+        {
+          "name": "tenant_id",
+          "type": "string",
+          "description": "企业",
+          "nullable": true
+        },
+        {
+          "name": "date",
+          "type": "date",
+          "description": "日期",
+          "nullable": true
+        },
+        {
+          "name": "notice_hours",
+          "type": "number",
+          "description": "提前小时",
+          "nullable": true
+        },
+        {
+          "name": "requested_kw",
+          "type": "number",
+          "description": "已接受请求",
+          "nullable": true
+        },
+        {
+          "name": "actual_kw",
+          "type": "number",
+          "description": "核实响应",
+          "nullable": true
+        },
+        {
+          "name": "rebound_kwh",
+          "type": "number",
+          "description": "次日回补",
+          "nullable": true
+        },
+        {
+          "name": "consecutive_calls",
+          "type": "integer",
+          "description": "连续调用次数",
+          "nullable": true
+        },
+        {
+          "name": "acceptance_probability",
+          "type": "number",
+          "description": "接受登记概率",
+          "nullable": true
+        },
+        {
+          "name": "available_at",
+          "type": "datetime",
+          "description": "可知时点",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "event_id"
+      ],
+      "references": [
+        {
+          "column": "tenant_id",
+          "target_table": "tenants",
+          "target_column": "tenant_id"
+        }
+      ],
+      "path": "data/response_history.csv",
+      "row_count": 240,
+      "sha256": "4d5bb468737f90895545940969ce8b080e5121e0b96b200bf21ab0b43db536ae"
+    },
+    {
+      "name": "flex_offers",
+      "description": "可谈条件，成本按实际调用削减千瓦时。",
+      "columns": [
+        {
+          "name": "offer_id",
+          "type": "string",
+          "description": "方案",
+          "nullable": true
+        },
+        {
+          "name": "tenant_id",
+          "type": "string",
+          "description": "企业",
+          "nullable": true
+        },
+        {
+          "name": "max_kw",
+          "type": "number",
+          "description": "可调上限",
+          "nullable": true
+        },
+        {
+          "name": "notice_hours",
+          "type": "number",
+          "description": "提前通知",
+          "nullable": true
+        },
+        {
+          "name": "min_gap_days",
+          "type": "integer",
+          "description": "调用间隔",
+          "nullable": true
+        },
+        {
+          "name": "max_consecutive",
+          "type": "integer",
+          "description": "最大连续调用",
+          "nullable": true
+        },
+        {
+          "name": "yuan_kwh",
+          "type": "number",
+          "description": "补偿单价",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "description": "当前状态",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "offer_id"
+      ],
+      "references": [
+        {
+          "column": "tenant_id",
+          "target_table": "tenants",
+          "target_column": "tenant_id"
+        }
+      ],
+      "path": "data/flex_offers.csv",
+      "row_count": 8,
+      "sha256": "c0f2f85cd39c88314314bb4f0a2879da16f22d428f032fdb85025df29183ee41"
+    },
+    {
+      "name": "applications",
+      "description": "新增接入申请，可竞争相同期限。",
+      "columns": [
+        {
+          "name": "application_id",
+          "type": "string",
+          "description": "申请",
+          "nullable": true
+        },
+        {
+          "name": "process",
+          "type": "string",
+          "description": "工艺",
+          "nullable": true
+        },
+        {
+          "name": "start",
+          "type": "date",
+          "description": "投产",
+          "nullable": true
+        },
+        {
+          "name": "ramp_days",
+          "type": "integer",
+          "description": "爬坡天数",
+          "nullable": true
+        },
+        {
+          "name": "rated_kw",
+          "type": "number",
+          "description": "铭牌",
+          "nullable": true
+        },
+        {
+          "name": "output_index",
+          "type": "number",
+          "description": "目标产量指数",
+          "nullable": true
+        },
+        {
+          "name": "max_exceed_probability",
+          "type": "number",
+          "description": "超限概率",
+          "nullable": true
+        },
+        {
+          "name": "latest_reply",
+          "type": "date",
+          "description": "最晚答复",
+          "nullable": true
+        },
+        {
+          "name": "allowed_restriction_kw",
+          "type": "number",
+          "description": "可接受受限功率",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "application_id"
+      ],
+      "references": [],
+      "path": "data/applications.csv",
+      "row_count": 3,
+      "sha256": "af60a9a9ca684ec6e047e02de271123dc0f63dc39b158e1fe76ccec9f1ecddbf"
+    },
+    {
+      "name": "capacity",
+      "description": "未来分析容量与公共负荷假设。",
+      "columns": [
+        {
+          "name": "scenario_id",
+          "type": "string",
+          "description": "场景",
+          "nullable": true
+        },
+        {
+          "name": "incoming_limit_kw",
+          "type": "number",
+          "description": "进线上限",
+          "nullable": true
+        },
+        {
+          "name": "common_load_kw",
+          "type": "number",
+          "description": "公共负荷",
+          "nullable": true
+        },
+        {
+          "name": "cost_budget",
+          "type": "number",
+          "description": "柔性月补偿预算",
+          "nullable": true
+        }
+      ],
+      "key": [
+        "scenario_id"
+      ],
+      "references": [],
+      "path": "data/capacity.csv",
+      "row_count": 2,
+      "sha256": "c99e17c1a86b9a590c88ce07bc389f66d6fae85d137ac790592c7caaa62a96c3"
+    }
+  ]
+}

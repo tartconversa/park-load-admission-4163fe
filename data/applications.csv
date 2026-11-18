@@ -1,0 +1,4 @@
+application_id,process,start,ramp_days,rated_kw,output_index,max_exceed_probability,latest_reply,allowed_restriction_kw
+A1,P2,2025-05-13,30,220,1.2,0.02,2025-05-06,40
+A2,P3,2025-05-15,30,260,1.2,0.02,2025-05-06,40
+A3,P1,2025-05-17,30,300,1.2,0.02,2025-05-06,40
